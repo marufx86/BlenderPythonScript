@@ -58,3 +58,44 @@ def delete_unused_materials():
 
 # Call the function to delete unused materials
 delete_unused_materials() 
+
+#############################################################################################################################
+
+
+## Ungroups, unparents, and clears history for all objects in the scene
+import bpy
+
+def ungroup_unparent_clear_history():
+    """Ungroups, unparents, and clears history for all objects in the scene."""
+
+    # Switch to object mode if not already
+    if bpy.context.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+    # Get all objects in the scene
+    objects = bpy.context.scene.objects
+
+    # Ungroup (Clear Parent and Keep Transformation)
+    for obj in objects:
+        if obj.parent and obj.parent_type == 'OBJECT':
+            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+    print("Ungrouped all objects.")
+
+    # Unparent (Clear Parent)
+    for obj in objects:
+        if obj.parent:
+            bpy.ops.object.parent_clear(type='CLEAR')
+
+    print("Unparented all objects.")
+
+    # Clear object history 
+    for obj in objects:
+        bpy.ops.object.select_all(action='DESELECT')  # Deselect all
+        obj.select_set(True)  # Select the current object
+        bpy.ops.object.transform_apply(location=True, rotation=True, scale=True) 
+
+    print("Cleared transformation history for all objects.")
+
+# Run the function
+ungroup_unparent_clear_history() 
