@@ -99,3 +99,27 @@ def ungroup_unparent_clear_history():
 
 # Run the function
 ungroup_unparent_clear_history() 
+
+#############################################################################################################
+
+import bpy
+
+def delete_empty_groups():
+    """Deletes all empty groups (empty parent objects) in the scene."""
+
+    # Switch to object mode if not already
+    if bpy.context.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+    # Get all objects in the scene
+    objects = bpy.context.scene.objects
+
+    # Delete empty groups
+    for obj in objects:
+        if obj.type == 'EMPTY' and not obj.children:  # Check if empty and has no children
+            bpy.data.objects.remove(obj, do_unlink=True)  # Remove the empty object
+
+    print("Deleted all empty groups.")
+
+# Run the function
+delete_empty_groups() 
