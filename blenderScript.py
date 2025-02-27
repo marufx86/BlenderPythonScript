@@ -121,5 +121,45 @@ def delete_empty_groups():
 
     print("Deleted all empty groups.")
 
+
+##########################################################################################################
+
+import bpy
+
+def assign_new_material_based_on_object_name():
+    """
+    For each selected mesh, this function creates (or reuses) a material with a name
+    derived from the mesh's name by replacing 'SM_' with 'M_' and assigns it to the mesh.
+    """
+    for obj in bpy.context.selected_objects:
+        if obj.type == 'MESH':
+            # Determine the new material name based on the object's name
+            if obj.name.startswith("SM_"):
+                new_mat_name = "M_" + obj.name[3:]
+            else:
+                new_mat_name = "M_" + obj.name  # Fallback if not following the 'SM_' pattern
+            
+            # Try to get an existing material with the new name, or create a new one
+            mat = bpy.data.materials.get(new_mat_name)
+            if not mat:
+                mat = bpy.data.materials.new(name=new_mat_name)
+                print(f"Created new material: {new_mat_name}")
+            else:
+                print(f"Using existing material: {new_mat_name}")
+            
+            # Assign the material to the mesh
+            # If the object already has material slots, replace the first one;
+            # otherwise, create a new material slot.
+            if obj.data.materials:
+                obj.data.materials[0] = mat
+            else:
+                obj.data.materials.append(mat)
+                
+    print("Assigned new materials to all selected meshes.")
+
+# Run the function
+assign_new_material_based_on_object_name()
+
+
 # Run the function
 delete_empty_groups() 
