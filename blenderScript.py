@@ -122,6 +122,9 @@ def delete_empty_groups():
     print("Deleted all empty groups.")
 
 
+# Run the function
+delete_empty_groups() 
+
 ##########################################################################################################
 
 import bpy
@@ -160,6 +163,3 @@ def assign_new_material_based_on_object_name():
 # Run the function
 assign_new_material_based_on_object_name()
 
-
-# Run the function
-delete_empty_groups() 
